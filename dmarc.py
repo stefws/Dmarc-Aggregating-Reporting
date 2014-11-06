@@ -556,7 +556,7 @@ class report(object):
     numstats = (self.statdict and len(self.statdict)) or 0
     if numstats==0:
       if verbose: print 'no report generated for %s due to empty statdict...' % dom
-    elif len(self.dul.uris())==0:
+    elif self.dul==None or len(self.dul.uris())==0:
       print 'ERROR: no one to report to for %s' % dom
     else:
       if verbose: print '\nFound valid URI(s) for %s: %s' % (dom,self.dul.uris())
