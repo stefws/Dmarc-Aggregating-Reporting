@@ -16,7 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 #
-# Version 1.0
+# Version 1.1
 
 import sys
 from datetime import date
@@ -122,7 +122,7 @@ for root, dirs, files in os.walk(directory):
     for ln in fp:
       line = dmarc.logline(ln)
       if line.valid():
-        dom = line.fromdom
+        dom = line.policy.dom
         if not dom in dmarcreport:
           dmarcreport[dom] = dmarc.report(dom,startdate,ebegin,eend)
         ts = int(line.ts)
