@@ -16,7 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 #
-# Version 1.0
+# Version 1.1
 
 import sys
 from datetime import date
@@ -82,7 +82,7 @@ class dnstags(object):
     tags = re.split(r'\s*;\s*', self.dnstxt);
     for tag in tags:
       try:
-        kv = re.search(r'(?P<key>\S+)\s*=\s*(?P<val>\S+)', tag)
+        kv = re.search(r'(?P<key>\S+)\s*=\s*(?P<val>.+)', tag)
         key = kv.group('key')
         val = kv.group('val')
         try:
@@ -196,7 +196,7 @@ class urilist(object):
   def __init__(self, urilist, domain):
     self.list = []
     dotdom = '.' + domain
-    urisets = urilist.split(',')
+    urisets = re.split(r'\s*,\s*', urilist)
     for u in urisets:
       dmuri = uri(u)
       if dmuri.protocol == 'mailto':  # we only deal with mailto URIs so far :)
