@@ -491,7 +491,10 @@ class statrec(object):
         dispos = 'none'
       xml += '  <record>\n    <row>\n      <source_ip>%s</source_ip>\n      <count>%d</count>\n      <policy_evaluated>\n        <disposition>%s</disposition>\n        <dkim>%s</dkim>\n        <spf>%s</spf>\n' % (self.hash.ip, self.msgcount, dispos, self.hash.dkimaligned, self.hash.spfaligned)
       if comment:
-        xml += '        <reason>\n          <type>%s</type>\n          <comment>%s</comment>\n' % (self.hash.dispos, self.comment)
+        cmt = self.comment
+        if len(cmt)==0:
+          cmt = 'none'
+        xml += '        <reason>\n          <type>%s</type>\n          <comment>%s</comment>\n        </reason>\n' % (self.hash.dispos, cmt)
       xml += '      </policy_evaluated>\n    </row>\n    <identifiers>\n      <header_from>%s</header_from>\n    </identifiers>\n    <auth_results>\n      <spf>\n        <domain>%s</domain>\n        <result>%s</result>\n      </spf>\n%s    </auth_results>\n  </record>\n' % (self.hash.fromdom, self.hash.envdom, self.hash.spfaligned, self.hash.signlist.xml())
     else:
       xml = ''
