@@ -595,7 +595,7 @@ class report(object):
       gzipmsg.add_header('Content-Disposition', 'attachment', filename=rid+'.xml.gz')
       msg = MIMEMultipart()
       msg['From']=self.repfrom
-      msg['To']='"DMARC RUA recipient" <>'
+      msg['To']='"DMARC RUA recipient":;'
       msg['Subject']= 'Report Domain: %s Submitter: %s Report-ID: %s' % (dom,self.orgname,rid)
       msg.attach(gzipmsg)
       msgtxt = msg.as_string(False)
