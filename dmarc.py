@@ -16,7 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 #
-# Version 1.1
+# Version 1.2
 
 import sys
 from datetime import date
@@ -291,7 +291,7 @@ class policy(object):
 
   def xml(self):
     if self.p:
-      xml = '  <policy_published>\n    <domain>%s</domain>\n    <adkim>%s</adkim>\n    <aspf>%s</aspf>\n    <p>%s</p>\n    <sp>%s</sp>\n    <pct>%s</pct>\n  </policy_published>\n' % self._tuple()
+      xml = '  <policy_published>\n    <domain>%s</domain>\n    <aspf>%s</aspf>\n    <adkim>%s</adkim>\n    <p>%s</p>\n    <sp>%s</sp>\n    <pct>%s</pct>\n  </policy_published>\n' % self._tuple()
     else:
       xml = ''
     return xml
@@ -514,7 +514,7 @@ class report(object):
   def __init__(self,domain,sdate,begin,end,rtag='dmarc'):
 
     #-- default report settings, change through object 'setters' if desired
-    self.repenv = 'dmarc.noreply@foo.bar'
+    self.repenv = '"dmarc.noreply" <>'
     self.repfrom= 'dmarc.report@foo.bar'
     self.smtpsrv = 'smtp.foo.bar'
     self.smtpport= 25
@@ -594,9 +594,18 @@ class report(object):
       zr.close()
       gzipmsg.add_header('Content-Disposition', 'attachment', filename=rid+'.xml.gz')
       msg = MIMEMultipart()
+<<<<<<< HEAD
+      msg['From'] =self.repfrom
+      msg['To'] ='"DMARC RUA recipient":;'
+      msg['Subject'] = 'Report Domain: %s Submitter: %s Report-ID: %s' % (dom,self.orgname,rid)
+      msg['Auto-Submitted'] = 'auto-generated'
+      msg['Precedence'] = 'bulk'
+      msg['X-Auto-Response-Suppress'] = 'OOF'
+=======
       msg['From']=self.repfrom
       msg['To']='"DMARC RUA recipient":;'
       msg['Subject']= 'Report Domain: %s Submitter: %s Report-ID: %s' % (dom,self.orgname,rid)
+>>>>>>> origin/master
       msg.attach(gzipmsg)
       msgtxt = msg.as_string(False)
       msgtxtlen = len(msgtxt)
@@ -773,6 +782,9 @@ if __name__ == "__main__":
   dr = report(domain,startdate,12345,23456)
   #dr.update(rec3)
   logl = '1396869553@dmarc1@fep25@DC/54-07107-1B982435@91.211.240.8@fail@reject@local_policy@DKIM validation bug@nyheder.bilka.dk@nyheder.bilka.dk@r@s@reject@reject@100@S@fail@emarsys.net@pass@D@fail@nyheder.bilka.dk@fail\n'
+  rec = logline(logl)
+  dr.update(rec)
+  logl = '1396869553@dmarc1@fep25@DC/54-07107-1B982435@91.211.240.8@fail@reject@local_policy@@nyheder.siimit.dk@nyheder.siimit.dk@r@s@reject@reject@100@S@fail@emarsys.net@pass@D@fail@nyheder.siimit.dk@fail\n'
   rec = logline(logl)
   dr.update(rec)
   dr.update(rec1)
